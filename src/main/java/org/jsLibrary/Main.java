@@ -1,4 +1,4 @@
-package org.js-library;
+package org.jsLibrary;
 
 public class Main {
     public static void main(String[] args) {
