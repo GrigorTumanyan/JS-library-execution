@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Test Enigma Library</title>
+        <script src="envConfig.js"></script>
+        <script type="text/javascript" src="kpi-controller.js"></script>
+    </head>
+    <body>
+        <script type="module">
+            import { getKpiConfig } from './kpiConfig.js';
+            import { appConfig } from './app_config.js';
+            let performanceLog = true,
+                consoleLog = true,
+                verification_mode = 0, //0 - disabled, 1 - single mode, 2 - Bulk mode
+                kpiConfig = getKpiConfig(appConfig, verification_mode);
+
+            //creating an instance of a class with default config
+            window.myKPIController = new KPIController(
+                envConfig,
+                kpiConfig,
+                appConfig,
+                performanceLog,
+                consoleLog,
+                verification_mode,
+            );
+            console.log('Hello KPI Controller');
+
+            if (verification_mode != 2) {
+                //dynamic selections (change myKPIController.appConfig)
+                myKPIController.setFieldSelection('', 'country', 'US');
+                //myKPIController.setFieldSelection("","productLine","R");
+                myKPIController.setFieldSelection('', 'userid', 'mikecheck.'); //tarasenko_test1@gmail.com. beaconQA. mikecheck. pepsitest01. diachenko1@gmail.com.
+                //myKPIController.setFieldSelection("","groupid","test");
+                //rebuild KPI config based on new appConfig
+                myKPIController.kpiConfig = getKpiConfig(
+                    myKPIController.appConfig,
+                    verification_mode,
+                );
+
+                console.log('start', Date());
+                //myKPIController.getKPIs([71,91,92,93,94,95,96,97,98,99,100,101,102,103,106,107,108,109,110,114,115,116,117], "ID").then((o)=>{
+                //myKPIController.getKPIs(["contractCharges","maintenanceCharges","specialCharges","totalCharges","fuelCharges","24x7","rentalActivity","CMVariance"], "APP").then((o)=>{
+                //myKPIController.getKPIs(["contractCharges","maintenanceCharges","specialCharges","totalCharges","fuelCharges","24x7","rentalActivity","CMVariance","PMCompliance"], "APP").then((o)=>{ //[99,120], "ID"
+                //myKPIController.getKPIs(["contractCharges","maintenanceCharges","specialCharges","totalCharges","fuelCharges","24x7","rentalActivity","CMVariance","PMCompliance","fuelNonInvoiced","fuelPumped","fuelTaxCompliance"], "APP").then((o)=>{
+                myKPIController.getKPIs().then((res) => {
+                    window.data = res;
+                    //console.log(res)
+                    console.log('finish', Date());
+
+                    if (verification_mode != 0) {
+                        let ver = myKPIController.KPIVerification(res); //[27, 28, 29, 30, 71, 87, 99, 100, 115, 117, 120, 123]
+                        console.log(ver);
+                    }
+                });
+            } else {
+                myKPIController.KPIBulkVerification(
+                    myKPIController,
+                    envConfig,
+                    kpiConfig,
+                    appConfig,
+                    performanceLog,
+                    consoleLog,
+                    verification_mode,
+                );
+                /*myKPIController.getKPIs([999, "ID"]).then((res)=>{                   
+                console.log(res);
+            });*/
+            }
+
+            /*================= Examples ========================================== 
+            //call KPI by KPI ID (works good only for 1 KPI call, don't use in loop)
+            myKPIController.getKPI(100).then((o)=>{
+                window.data = o
+                console.log(o)
+            });
+
+            //call KPIs by list of IDs 
+            myKPIController.getKPIs([71, 96, 97, 98, 99, 100, 117], "ID").then((o)=>{
+                window.data = o
+                console.log(o)
+            });
+
+            //call KPIs by list of KPI names 
+            myKPIController.getKPIs(["TotalRentalContracts","TotalSpentOnRentals","TopRentalDurations","TopRentalEquipmentCosts","TopPenskeLocations","TopYourLocations"], "KPI").then((o)=>{
+                window.data = o
+                console.log(o)
+            });
+
+            //call KPIs by list of App names 
+            myKPIController.getKPIs(["maintenanceCharges", "rentalActivity"], "APP").then((o)=>{
+                window.data = o
+                console.log(o)
+            });
+
+            //call all KPIs
+            myKPIController.getKPIs().then((o)=>{
+                window.data = o
+                console.log(o)
+            });
+        ======================================================================*/
+        </script>
+    </body>
+</html>

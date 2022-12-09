@@ -1,1 +1,0 @@
-var envConfig={host:"reportsqa.fleetinsight.com",proxy:"qsqa",app:"762b9e26-c4f8-4751-8eea-2f34a6ae699e",apiUrl:"https://reportsqa.fleetinsight.com/qsqa/api/penskelogger/api/v1/penskelogger/appendLog"};
